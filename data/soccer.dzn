@@ -1,0 +1,34 @@
+states  = {messi, suarez, score};
+actions = {shoot, pass, return};
+
+P = array3d(states,actions,states,[
+    % from messi
+    0.0, 0.8, 0.2, % shoot
+    0.0, 1.0, 0.0, % pass
+    0.0, 0.0, 0.0, % return    
+    % from suarez
+    0.4, 0.0, 0.6, % shoot
+    1.0, 0.0, 0.0, % pass
+    0.0, 0.0, 0.0, % return
+    % from score
+    0.0, 0.0, 0.0, % shoot
+    0.0, 0.0, 0.0, % pass
+    1.0, 0.0, 0.0, % return
+]);
+
+R = array3d(states,actions,states,[
+    % from messi
+     0, -2,  3, % shoot
+     0, -2,  3, % pass
+     0,  0,  0, % return    
+    % from suarez
+    -1,  0,  3, % shoot
+    -1,  0,  0, % pass
+     0,  0,  0, % return
+    % from score
+     0,  0,  0, % shoot
+     0,  0,  0, % pass
+    -1,  0,  0, % return
+]);
+
+g = 1;
