@@ -44,7 +44,7 @@ class MDPModel :
 def pod(r) :
     return 0.3
 
-M = MDPModel(3, 0.3)
+M = MDPModel(5, 0.3)
 
 from minizinc import Instance, Model, Solver
 

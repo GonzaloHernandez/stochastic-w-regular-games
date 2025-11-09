@@ -1,0 +1,21 @@
+{
+    "openFiles": [
+        "data/bet.dzn",
+        "data/soccer.dzn",
+        "data/4grid.dzn",
+        "data/osp.dzn",
+        "data/soccer.dzn",
+        "mzn_model/mdp.mzn"
+    ],
+    "openTab": 0,
+    "projectFiles": [
+        "data/4grid.dzn",
+        "data/bet.dzn",
+        "data/osp.dzn",
+        "data/soccer.dzn",
+        "mzn_model/mdp.mzn"
+    ],
+    "selectedBuiltinConfigId": "org.gecode.gecode",
+    "selectedBuiltinConfigVersion": "6.3.0",
+    "version": 106
+}

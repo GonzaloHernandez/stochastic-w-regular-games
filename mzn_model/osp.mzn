@@ -39,3 +39,4 @@ constraint
     );
 
 solve maximize sum (t in T, r in V)(POS[t,r]);
+% solve maximize sum (t in T)(max(r in V)(POS[t,r]));
