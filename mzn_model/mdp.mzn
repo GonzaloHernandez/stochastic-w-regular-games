@@ -22,12 +22,12 @@ constraint
         )
     );
 
-% constraint
-%     forall(s in states, a in actions) (
-%         OU[s] >= EU[s,a]
-%     );
+constraint
+    forall(s in states, a in actions) (
+        OU[s] >= EU[s,a]
+    );
 
-solve minimize sum(OU);
+% solve minimize sum(OU);
 
 include "globals.mzn";
 array[states] of var actions : OP;
@@ -38,5 +38,5 @@ constraint
         )
     );
 
-% output 
-%     ["\(to_enum(actions,arg_max(a in actions)(fix(EU[s,a])))) " | s in states ];
+output 
+    ["\(to_enum(actions,arg_max(a in actions)(fix(EU[s,a])))) " | s in states ];

@@ -1,0 +1,5 @@
+output ["\"output\": {","\"dzn\": ",showJSON(concat(["strategies = ",showDzn(strategies),";\n","payoffs = ",showDzn(payoffs),";\n"])),"}, \"sections\": [\"dzn\"]"];
+set of int: vertices = 1..8;
+array [vertices] of float: payoffs;
+set of int: edges = 1..10;
+array [edges] of bool: strategies;
