@@ -18,39 +18,78 @@ array[edges] of vertices: sources;
 array[edges] of vertices: targets;
 array[edges] of prob    : chances;
 
-array[vertices] of var bool : subgraph;
-array[edges]    of var bool : policy;
-array[vertices] of var prob : payoffs;
-float : gamma = 0.9;
-int: init = 1;
-
+array[vertices] of var bool : V;
+array[edges]    of var bool : E;
+array[vertices] of var prob : P;
+int: init;
 
 constraint
-    forall(v in vertices where owners[v]=SNK)(
-        payoffs[v] = values[v]
+    V[init];
+
+constraint
+    forall(v in vertices where owners[v]=MAX \/ owners[v]=MIN)(
+        V[v] -> sum(e in edges where sources[e]=v)(E[e]) = 1
     );
 
 constraint
-    forall(v in vertices where owners[v]=MAX \/ owners[v]=MAX)(
-        exists(e in edges where sources[e]=v /\ policy[e])(
-            payoffs[v] = payoffs[targets[e]]
+    forall(v in vertices where owners[v]=AVE)(
+        V[v] -> forall(e in edges where sources[e]=v)(E[e])
+    );
+
+constraint
+    forall(v in vertices)(
+        (not V[v]) -> forall(e in edges where sources[e]=v)(not E[e])
+    );
+
+constraint
+    forall(e in edges)(
+        E[e] -> V[targets[e]]
+    );
+
+constraint
+    forall(w in vertices where w != init)(
+        V[w] -> exists(e in edges where targets[e]=w)(E[e])
+    );
+
+% -----------------------------------------------------------------
+
+constraint
+    forall(v in vertices where owners[v]=SNK)(
+        P[v] = values[v]
+    );
+
+constraint
+    forall(v in vertices where owners[v]=MAX \/ owners[v]=MIN)(
+        exists(e in edges where sources[e]=v /\ E[e])(
+            P[v] = P[targets[e]]
         )
     );
 
 constraint
     forall(v in vertices where owners[v]=AVE)(
-        payoffs[v] = sum(e in edges where sources[e]=v)(
-            chances[e]*payoffs[targets[e]]
+        P[v] = sum(e in edges where sources[e]=v)(
+            chances[e]*P[targets[e]]
         )
     );
+
+% -----------------------------------------------------------------
 
 var float : objective;
 
 constraint
     if (owners[init]=MAX) then
-        objective = payoffs[init]
+        objective = P[init]
     else
-        objective = 1-payoffs[init]
+        objective = 1-P[init]
     endif;
 
 solve maximize objective;
+
+% -----------------------------------------------------------------
+
+output
+    [ "P=\(P)\n" ] ++
+    [ "O=\(objective)\n" ] ++
+    [ if fix(v) then "1" else "0" endif | v in V ] ++ 
+    [ "," ] ++
+    [ if fix(e) then "1" else "0" endif | e in E ];

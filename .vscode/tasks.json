@@ -4,7 +4,7 @@
         {
             "label": "Run MiniZinc file",
             "type": "shell",
-            "command": "minizinc ${workspaceFolder}/mzn_model/mdp.mzn ${workspaceFolder}/data/soccer.dzn",
+            "command": "minizinc ${workspaceFolder}/mzn_model/ssc.mzn ${workspaceFolder}/data/simple-stochastic-game-Somla.dzn",
             "group": {
                 "kind": "build",
                 "isDefault": true
