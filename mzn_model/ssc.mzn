@@ -1,10 +1,10 @@
 % Use this editor as a MiniZinc scratch book
 int: MIN = 0;
 int: MAX = 1;
-int: AVE = 2;
+int: RND = 2;
 int: SNK = 3;
 
-set of int : types = {MIN,MAX,AVE,SNK};
+set of int : types = {MIN,MAX,RND,SNK};
 int: nvertices;
 int: nedges;
 
@@ -32,7 +32,7 @@ constraint
     );
 
 constraint
-    forall(v in vertices where owners[v]=AVE)(
+    forall(v in vertices where owners[v]=RND)(
         V[v] -> forall(e in edges where sources[e]=v)(E[e])
     );
 
@@ -59,16 +59,16 @@ constraint
     );
 
 constraint
-    forall(v in vertices where owners[v]=MAX \/ owners[v]=MIN)(
+    forall(v in vertices where V[v] /\ (owners[v]=MAX \/ owners[v]=MIN))(
         exists(e in edges where sources[e]=v /\ E[e])(
             P[v] = P[targets[e]]
         )
     );
 
 constraint
-    forall(v in vertices where owners[v]=AVE)(
+    forall(v in vertices where owners[v]=RND)(
         P[v] = sum(e in edges where sources[e]=v)(
-            chances[e]*P[targets[e]]
+            chances[e] * P[targets[e]]
         )
     );
 
