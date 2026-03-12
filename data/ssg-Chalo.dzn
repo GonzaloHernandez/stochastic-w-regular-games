@@ -1,0 +1,7 @@
+nvertices = 5;
+owners = [0,1,2,3,3];
+values = [-0,-0,-0,0,1];
+nedges = 4;
+sources = [1,2,3,3];
+targets = [3,3,4,5];
+chances = [1,1,0.1,0.9];

@@ -59,9 +59,20 @@ constraint
     );
 
 constraint
-    forall(v in vertices where V[v] /\ (owners[v]=MAX \/ owners[v]=MIN))(
-        exists(e in edges where sources[e]=v /\ E[e])(
-            P[v] = P[targets[e]]
+    forall(v in vertices where V[v] /\ owners[v]=MAX)(
+        exists(e in edges where sources[e]=v)(
+            P[v] = P[targets[e]] /\ 
+            E[e] /\
+            forall(e2 in edges where sources[e2]=v)(P[v] >= P[targets[e2]])
+        )
+    );
+
+constraint
+    forall(v in vertices where V[v] /\ owners[v]=MIN)(
+        exists(e in edges where sources[e]=v)(
+            P[v] = P[targets[e]] /\ 
+            E[e] /\
+            forall(e2 in edges where sources[e2]=v)(P[v] <= P[targets[e2]])
         )
     );
 
@@ -86,10 +97,3 @@ constraint
 solve maximize objective;
 
 % -----------------------------------------------------------------
-
-output
-    [ "P=\(P)\n" ] ++
-    [ "O=\(objective)\n" ] ++
-    [ if fix(v) then "1" else "0" endif | v in V ] ++ 
-    [ "," ] ++
-    [ if fix(e) then "1" else "0" endif | e in E ];
