@@ -1,4 +1,3 @@
-% Use this editor as a MiniZinc scratch book
 int: MIN = 0;
 int: MAX = 1;
 int: RND = 2;
@@ -12,16 +11,20 @@ set of int  : vertices  = 1..nvertices;
 set of int  : edges     = 1..nedges;
 set of float: prob      = 0.0..1.0; 
 
-array[vertices] of types: owners;
-array[vertices] of prob : values;
-array[edges] of vertices: sources;
-array[edges] of vertices: targets;
-array[edges] of prob    : chances;
+% -------------------------------------------------------------------------
 
+array[vertices] of types    : owners;
+array[vertices] of prob     : values;
+array[edges]    of vertices : sources;
+array[edges]    of vertices : targets;
+array[edges]    of prob     : chances;
+
+array[vertices] of var prob : P;
 array[vertices] of var bool : V;
 array[edges]    of var bool : E;
-array[vertices] of var prob : P;
 int: init;
+
+% -------------------------------------------------------------------------
 
 constraint
     V[init];
@@ -51,7 +54,9 @@ constraint
         V[w] -> exists(e in edges where targets[e]=w)(E[e])
     );
 
-% -----------------------------------------------------------------
+% -------------------------------------------------------------------------
+
+include "globals.mzn";
 
 constraint
     forall(v in vertices where owners[v]=SNK)(
@@ -60,20 +65,20 @@ constraint
 
 constraint
     forall(v in vertices where V[v] /\ owners[v]=MAX)(
-        exists(e in edges where sources[e]=v)(
-            P[v] = P[targets[e]] /\ 
-            E[e] /\
-            forall(e2 in edges where sources[e2]=v)(P[v] >= P[targets[e2]])
-        )
+        let {
+            set of int: out_edges = {e1 | e1 in edges where sources[e1]=v};
+            var int: best = arg_max(e2 in out_edges)(P[targets[e2]]);
+        } in
+        P[v] = P[targets[best]] /\  E[best]
     );
 
 constraint
     forall(v in vertices where V[v] /\ owners[v]=MIN)(
-        exists(e in edges where sources[e]=v)(
-            P[v] = P[targets[e]] /\ 
-            E[e] /\
-            forall(e2 in edges where sources[e2]=v)(P[v] <= P[targets[e2]])
-        )
+        let {
+            set of int: out_edges = {e1 | e1 in edges where sources[e1]=v};
+            var int: best = arg_min(e2 in out_edges)(P[targets[e2]]);
+        } in
+        P[v] = P[targets[best]] /\  E[best]
     );
 
 constraint

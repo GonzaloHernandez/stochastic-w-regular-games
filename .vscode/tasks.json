@@ -4,15 +4,30 @@
         {
             "label": "Run MiniZinc file",
             "type": "shell",
-            "command": "minizinc ${workspaceFolder}/mzn_model/ssc.mzn ${workspaceFolder}/data/simple-stochastic-game-Somla.dzn",
+            "command": "minizinc ${workspaceFolder}/mzn_model/ssc.mzn ${workspaceFolder}/data/ssg-Chalo.dzn",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        // ------------------------------------------------------------------------
+        {
+            "label": "Run Python file",
+            "type": "shell",
+            "command": "${workspaceFolder}/.venv/bin/python ${workspaceFolder}/ssc.py", 
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "presentation": {
                 "reveal": "always",
-                "panel": "new"
-            }
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": []
         }
     ]
 }
