@@ -22,7 +22,7 @@ array[edges]    of prob     : chances;
 array[vertices] of var prob : P;
 array[vertices] of var bool : V;
 array[edges]    of var bool : E;
-int: init;
+int: init = 1;
 
 % -------------------------------------------------------------------------
 
@@ -32,6 +32,7 @@ constraint
 constraint
     forall(v in vertices where owners[v]=MAX \/ owners[v]=MIN)(
         V[v] -> sum(e in edges where sources[e]=v)(E[e]) = 1
+        % V[v] -> exists(e in edges where sources[e]=v)(E[e])
     );
 
 constraint
@@ -39,10 +40,10 @@ constraint
         V[v] -> forall(e in edges where sources[e]=v)(E[e])
     );
 
-constraint
-    forall(v in vertices)(
-        (not V[v]) -> forall(e in edges where sources[e]=v)(not E[e])
-    );
+% constraint
+%     forall(v in vertices)(
+%         (not V[v]) -> forall(e in edges where sources[e]=v)(not E[e])
+%     );
 
 constraint
     forall(e in edges)(
@@ -64,21 +65,19 @@ constraint
     );
 
 constraint
-    forall(v in vertices where V[v] /\ owners[v]=MAX)(
+    forall(v in vertices where owners[v]=MAX)(
         let {
-            set of int: out_edges = {e1 | e1 in edges where sources[e1]=v};
-            var int: best = arg_max(e2 in out_edges)(P[targets[e2]]);
+            var edges:best = arg_max([e:P[targets[e]] | e in edges where sources[e]=v])
         } in
-        P[v] = P[targets[best]] /\  E[best]
+        P[v] = P[targets[best]] /\ E[best]
     );
 
 constraint
-    forall(v in vertices where V[v] /\ owners[v]=MIN)(
+    forall(v in vertices where owners[v]=MIN)(
         let {
-            set of int: out_edges = {e1 | e1 in edges where sources[e1]=v};
-            var int: best = arg_min(e2 in out_edges)(P[targets[e2]]);
+            var edges:best = arg_min([e:P[targets[e]] | e in edges where sources[e]=v])
         } in
-        P[v] = P[targets[best]] /\  E[best]
+        P[v] = P[targets[best]] /\ E[best]
     );
 
 constraint
@@ -87,18 +86,23 @@ constraint
             chances[e] * P[targets[e]]
         )
     );
+    
+% -----------------------------------------------------------------
+
+% constraint
+%     V[6];
 
 % -----------------------------------------------------------------
 
-var float : objective;
+% var float : objective;
 
-constraint
-    if (owners[init]=MAX) then
-        objective = P[init]
-    else
-        objective = 1-P[init]
-    endif;
+% constraint
+%     if (owners[init]=MAX) then
+%         objective = P[init]
+%     else
+%         objective = 1-P[init]
+%     endif;
 
-solve maximize objective;
+% solve maximize objective;
 
 % -----------------------------------------------------------------

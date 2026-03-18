@@ -17,7 +17,7 @@ engine = "org.minizinc.mip.highs"
 
 from minizinc import Instance, Model, Solver, Status
 model = Model("mzn_model/ssc.mzn")
-model.add_file("data/ssg-Chalo.dzn")
+model.add_file("data/ssg-Kretinsky.dzn")
 gecode = Solver.lookup(engine)
 instance = Instance(gecode, model)
 instance["init"] = 1
@@ -25,6 +25,8 @@ result = instance.solve()
 
 if result.status == Status.SATISFIED or result.status == Status.OPTIMAL_SOLUTION:
     print("P=",result["P"])
+    print("V=",result["V"])
+    print("E=",result["E"])
 
     v_as_binary = "".join(["1" if x else "0" for x in result["V"]])
     e_as_binary = "".join(["1" if x else "0" for x in result["E"]])
