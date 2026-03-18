@@ -22,7 +22,7 @@ array[edges]    of prob     : chances;
 array[vertices] of var prob : P;
 array[vertices] of var bool : V;
 array[edges]    of var bool : E;
-int: init = 1;
+int: init;
 
 % -------------------------------------------------------------------------
 
@@ -32,18 +32,12 @@ constraint
 constraint
     forall(v in vertices where owners[v]=MAX \/ owners[v]=MIN)(
         V[v] -> sum(e in edges where sources[e]=v)(E[e]) = 1
-        % V[v] -> exists(e in edges where sources[e]=v)(E[e])
     );
 
 constraint
     forall(v in vertices where owners[v]=RND)(
         V[v] -> forall(e in edges where sources[e]=v)(E[e])
     );
-
-% constraint
-%     forall(v in vertices)(
-%         (not V[v]) -> forall(e in edges where sources[e]=v)(not E[e])
-%     );
 
 constraint
     forall(e in edges)(
@@ -53,6 +47,11 @@ constraint
 constraint
     forall(w in vertices where w != init)(
         V[w] -> exists(e in edges where targets[e]=w)(E[e])
+    );
+
+constraint
+    forall(v in vertices)(
+        (not V[v]) -> forall(e in edges where sources[e]=v)(not E[e])
     );
 
 % -------------------------------------------------------------------------
@@ -69,7 +68,8 @@ constraint
         let {
             var edges:best = arg_max([e:P[targets[e]] | e in edges where sources[e]=v])
         } in
-        P[v] = P[targets[best]] /\ E[best]
+        P[v] = P[targets[best]] /\ 
+        (V[v] -> E[best])
     );
 
 constraint
@@ -77,7 +77,8 @@ constraint
         let {
             var edges:best = arg_min([e:P[targets[e]] | e in edges where sources[e]=v])
         } in
-        P[v] = P[targets[best]] /\ E[best]
+        P[v] = P[targets[best]] /\ 
+        (V[v] -> E[best])
     );
 
 constraint

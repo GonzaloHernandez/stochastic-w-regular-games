@@ -17,7 +17,7 @@ engine = "org.minizinc.mip.highs"
 
 from minizinc import Instance, Model, Solver, Status
 model = Model("mzn_model/ssc.mzn")
-model.add_file("data/ssg-Kretinsky.dzn")
+model.add_file("data/ssg-Chalo.dzn")
 gecode = Solver.lookup(engine)
 instance = Instance(gecode, model)
 instance["init"] = 1
@@ -28,9 +28,10 @@ if result.status == Status.SATISFIED or result.status == Status.OPTIMAL_SOLUTION
     print("V=",result["V"])
     print("E=",result["E"])
 
-    v_as_binary = "".join(["1" if x else "0" for x in result["V"]])
-    e_as_binary = "".join(["1" if x else "0" for x in result["E"]])
-    send_to_graphing(f"{v_as_binary},{e_as_binary}")
+    # v_as_binary = "".join(["1" if x else "0" for x in result["V"]])
+    # e_as_binary = "".join(["1" if x else "0" for x in result["E"]])
+    send_to_graphing(f"vertices={result["V"]}")
+    send_to_graphing(f"edges={result["E"]}")
 else:
     print("UNSATISFIABLE")
 
