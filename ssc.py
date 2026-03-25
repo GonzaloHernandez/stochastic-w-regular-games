@@ -17,7 +17,7 @@ engine = "org.minizinc.mip.highs"
 
 from minizinc import Instance, Model, Solver, Status
 model = Model("mzn_model/ssc.mzn")
-model.add_file("data/ssg-Chalo.dzn")
+model.add_file("data/mdp-sock.dzn")
 gecode = Solver.lookup(engine)
 instance = Instance(gecode, model)
 instance["init"] = 1

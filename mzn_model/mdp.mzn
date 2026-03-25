@@ -1,42 +1,28 @@
-enum states;
-enum actions;
-array[states,actions,states] of float: P;
-array[states,actions,states] of float: R;
-float : g;
+int: MIN = 0;
+int: MAX = 1;
+int: RND = 2;
 
-array[states,actions]   of var float : EU;
-array[states]           of var -100.0..100.0 : OU;
+set of int : TYPES = {MIN,MAX,RND};
+int: nvertices;
+int: nedges;
+
+set of int  : vertices  = 1..nvertices;
+set of int  : edges     = 1..nedges;
+set of float: prob      = 0.0..1.0; 
+
+% -------------------------------------------------------------------------
+
+array[vertices] of TYPES    : types;
+array[edges]    of vertices : sources;
+array[edges]    of vertices : targets;
+array[edges]    of prob     : chances;
+array[edges]    of float    : rewards;
+
+array[vertices] of var prob : P;
 
 constraint
-    forall(s in states,a in actions)(
-        EU[s,a] = 
-        sum(s_ in states) (
-            (P[s,a,s_])*(R[s,a,s_]+(g*OU[s_]))
+    forall(v in vertices where types[v]=RND)(
+        P[v] = sum(e in edges where sources[e]=v) (
+            chances[e] * (rewards[e]+(0.095*P[targets[e]]))
         )
     );
-
-constraint
-    forall(s in states) (
-        OU[s] = max(a in actions) (
-            EU[s,a]
-        )
-    );
-
-constraint
-    forall(s in states, a in actions) (
-        OU[s] >= EU[s,a]
-    );
-
-% solve minimize sum(OU);
-
-include "globals.mzn";
-array[states] of var actions : OP;
-constraint
-    forall(s in states) ( 
-        OP[s] = arg_max(a in actions)(
-            EU[s,a]
-        )
-    );
-
-output 
-    ["\(to_enum(actions,arg_max(a in actions)(fix(EU[s,a])))) " | s in states ];

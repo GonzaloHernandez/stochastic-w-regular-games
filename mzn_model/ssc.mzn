@@ -14,10 +14,11 @@ set of float: prob      = 0.0..1.0;
 % -------------------------------------------------------------------------
 
 array[vertices] of types    : owners;
-array[vertices] of prob     : values;
+array[vertices] of float    : values;
 array[edges]    of vertices : sources;
 array[edges]    of vertices : targets;
 array[edges]    of prob     : chances;
+array[edges]    of int      : rewards;
 
 array[vertices] of var prob : P;
 array[vertices] of var bool : V;
@@ -84,7 +85,7 @@ constraint
 constraint
     forall(v in vertices where owners[v]=RND)(
         P[v] = sum(e in edges where sources[e]=v)(
-            chances[e] * P[targets[e]]
+            chances[e] * (rewards[e] + P[targets[e]])
         )
     );
     
@@ -107,3 +108,9 @@ constraint
 % solve maximize objective;
 
 % -----------------------------------------------------------------
+
+output[
+    "vertices=\(V)\n" ++
+    "edges=\(E)\n" ++
+    "values=\(P)"
+    ];
