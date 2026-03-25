@@ -13,16 +13,14 @@ set of float: prob      = 0.0..1.0;
 % -------------------------------------------------------------------------
 
 array[vertices] of TYPES    : types;
+array[vertices] of float    : rewards;
 array[edges]    of vertices : sources;
 array[edges]    of vertices : targets;
 array[edges]    of prob     : chances;
-array[edges]    of float    : rewards;
 
-array[vertices] of var prob : P;
+array[vertices] of var float : P;
 
 constraint
     forall(v in vertices where types[v]=RND)(
-        P[v] = sum(e in edges where sources[e]=v) (
-            chances[e] * (rewards[e]+(0.095*P[targets[e]]))
-        )
+        P[v] = rewards[v] + 0.95*sum(e in edges where sources[e]=v) (chances[e] * P[targets[e]])
     );
