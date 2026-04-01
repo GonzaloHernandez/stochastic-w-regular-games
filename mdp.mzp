@@ -1,15 +1,11 @@
 {
     "openFiles": [
-        "data/bet.dzn",
-        "data/soccer.dzn",
-        "data/4grid.dzn",
-        "data/osp.dzn",
-        "data/soccer.dzn",
-        "mzn_model/mdp.mzn"
+        "mzn_model/mdp.mzn",
+        "data/bet.dzn"
     ],
     "openTab": 0,
     "projectFiles": [
-        "data/4grid.dzn",
+        "data/bet-matrix.dzn",
         "data/bet.dzn",
         "data/osp.dzn",
         "data/soccer.dzn",
