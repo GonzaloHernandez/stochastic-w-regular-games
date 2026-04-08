@@ -1,17 +1,26 @@
 {
     "openFiles": [
-        "mzn_model/mdp.mzn",
-        "data/bet.dzn"
+        "mzn_model/mdp-vertexrewards-value.mzn",
+        "mzn_model/mc-steadystate.mzn"
     ],
     "openTab": 0,
     "projectFiles": [
-        "data/bet-matrix.dzn",
-        "data/bet.dzn",
-        "data/osp.dzn",
-        "data/soccer.dzn",
-        "mzn_model/mdp.mzn"
+        "data/mdp-4grid-matrix.dzn",
+        "data/mdp-4grid.dzn",
+        "data/mdp-bet-matrix.dzn",
+        "data/mdp-bet.dzn",
+        "data/mdp-cat-problem-no-decisions.dzn",
+        "data/mdp-cat-problem.dzn",
+        "data/mdp-osp-matrix.dzn",
+        "data/mdp-osp.dzn",
+        "data/mdp-soccer.dzn",
+        "data/mdp-sock.dzn",
+        "data/mdp-test.dzn",
+        "mzn_model/mc-steadystate.mzn",
+        "mzn_model/mdp-edgerewards-value.mzn",
+        "mzn_model/mdp-vertexrewards-value.mzn"
     ],
-    "selectedBuiltinConfigId": "org.gecode.gecode",
-    "selectedBuiltinConfigVersion": "6.3.0",
+    "selectedBuiltinConfigId": "org.minizinc.mip.highs",
+    "selectedBuiltinConfigVersion": "1.9.0",
     "version": 106
 }

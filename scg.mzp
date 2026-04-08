@@ -1,0 +1,23 @@
+{
+    "openFiles": [
+        "mzn_model/ssc.mzn"
+    ],
+    "openTab": 0,
+    "projectFiles": [
+        "data/ssg-Berthon.dzn",
+        "data/ssg-Chalo.dzn",
+        "data/ssg-Condon.dzn",
+        "data/ssg-Kretinsky.dzn",
+        "data/ssg-Somla-SN2.dzn",
+        "data/ssg-Somla-SN3.dzn",
+        "data/ssg-Somla-SN4.dzn",
+        "data/ssg-Somla.dzn",
+        "data/ssg-dice.dzn",
+        "data/ssg-oneplayer.dzn",
+        "mzn_model/ssc.mzn",
+        "mzn_model/ssc_bak.mzn"
+    ],
+    "selectedBuiltinConfigId": "org.minizinc.mip.highs",
+    "selectedBuiltinConfigVersion": "1.9.0",
+    "version": 106
+}
