@@ -1,3 +1,5 @@
+include "globals.mzn";
+
 int: MIN = 0;
 int: MAX = 1;
 int: RND = 2;
@@ -27,8 +29,6 @@ set of vertices             : sinks;
 
 
 array[vertices] of var prob : P;
-
-include "globals.mzn";
 
 % --- Probability of stay in every vertex ---------------------------------
 

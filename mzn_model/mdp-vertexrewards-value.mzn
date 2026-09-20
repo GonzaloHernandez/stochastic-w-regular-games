@@ -1,3 +1,5 @@
+include "globals.mzn";
+
 int: MIN = 0;
 int: MAX = 1;
 int: RND = 2;
@@ -30,8 +32,6 @@ array[vertices] of var lower_bound .. upper_bound: P;
 % array[vertices] of float : bs = [(1.0/(1-g))*rewards[v] | v in vertices];
 % array[vertices] of var min(bs) .. max(bs): P;
 
-include "globals.mzn";
-
 % --- Rewards over vertices -----------------------------------------------
 
 constraint
@@ -57,3 +57,17 @@ constraint
 
 % Pending analysis of
 % - using the discount factor in non-random states.
+
+int: dummy = -1;
+array[vertices] of edges union {dummy} : policy::output_only = [
+    if types[v]=RND \/ v in sinks then
+        dummy 
+    else 
+        arg_max([e:fix(P[targets[e]]) | e in edges where sources[e]=v])
+    endif
+    | v in vertices ];
+
+output[
+    "P      =\(P) \n" 
+    ++ "policy =\(policy) \n"
+    ]

@@ -1,0 +1,8 @@
+nvertices = 4;
+types = [0,2,0,0];
+rewards = [2,2,3,4];
+nedges = 4;
+sources = [1,1,2,2];
+targets = [1,2,3,4];
+chances = [1,1,0,0];
+sinks = {3,4}

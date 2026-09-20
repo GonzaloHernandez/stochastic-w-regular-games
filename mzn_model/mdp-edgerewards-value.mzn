@@ -1,3 +1,5 @@
+include "globals.mzn";
+
 int: MIN = 0;
 int: MAX = 1;
 int: RND = 2;
@@ -20,15 +22,13 @@ array[edges]    of prob     : chances;
 array[edges]    of float    : rewards;
 set of vertices             : sinks;
 
-float                       : g = 0.99;
+float                       : g = 0.999;
 float: max_r = max(rewards);
 float: min_r = min(rewards);
 float: upper_bound = if max_r > 0 then max_r/(1.0-g) else max_r endif;
 float: lower_bound = if min_r < 0 then min_r/(1.0-g) else min_r endif;
 
 array[vertices] of var lower_bound .. upper_bound: P;
-
-include "globals.mzn";
 
 % --- Rewards over edges --------------------------------------------------
 
@@ -54,3 +54,17 @@ constraint
 % Pending analysis of 
 % - using the discount factor in non-random states.
 % - final states as Sink or Absortion state constraint 1 (self-loops)
+
+int: dummy = -1;
+array[vertices] of edges union {dummy} : policy::output_only = [
+    if types[v]=RND \/ v in sinks then
+        dummy 
+    else 
+        arg_max([e:fix(P[targets[e]]) | e in edges where sources[e]=v])
+    endif
+    | v in vertices ];
+
+output[
+    "P      =\(P) \n" 
+    ++ "policy =\(policy) \n"
+    ]
